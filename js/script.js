@@ -1,77 +1,62 @@
-document.querySelector('.close-btn').addEventListener('click', function() {
-    document.getElementById('messageModal').style.display = 'none';
+document.addEventListener("DOMContentLoaded", () => {
+    const displacementSelect = document.getElementById('displacement');
+    for (let i = 1; i <= 25; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        displacementSelect.appendChild(option);
+    }
+    
+    document.querySelector('.close-btn').addEventListener('click', cerrarModal);
+    document.querySelector('.close').addEventListener('click', cerrarModal);
 });
 
 function cifrarTexto() {
-    const mensaje = document.getElementById('message').value;
+    const mensaje = document.getElementById('message').value.trim();
     const desplazamiento = parseInt(document.getElementById('displacement').value);
 
-    if (mensaje.trim() === "") {
-        mostrarModal("Debe primero ingresar un mensaje antes de cifrar");
-        return;
-    }
+    if (!mensaje) return mostrarModal("Debe ingresar un mensaje antes de cifrar");
+    if (!/[a-zA-Z]/.test(mensaje)) return mostrarModal("El mensaje no contiene letras para cifrar");
 
-    if (!/[a-zA-Z]/.test(mensaje)) {
-        mostrarModal("El mensaje ingresado no contiene letras para cifrar");
-        return;
-    }
-
-    const mensajeCifrado = cifradoCesar(mensaje, desplazamiento);
-    document.getElementById('encryptedMessage').value = mensajeCifrado;
-
+    document.getElementById('encryptedMessage').value = cifradoCesar(mensaje, desplazamiento);
     mostrarAlfabetoDesplazado(desplazamiento);
     document.querySelector('.container').classList.add('expanded');
 }
 
 function cifradoCesar(texto, desplazamiento) {
-    let resultado = '';
-
-    for (let i = 0; i < texto.length; i++) {
-        const char = texto[i];
-
-        if (char.match(/[A-Z]/)) {
-            resultado += String.fromCharCode((char.charCodeAt(0) - 65 + desplazamiento) % 26 + 65);
-        } else if (char.match(/[a-z]/)) {
-            resultado += String.fromCharCode((char.charCodeAt(0) - 97 + desplazamiento) % 26 + 97);
-        } else {
-            resultado += char;
+    return [...texto].map(char => {
+        if (/[A-Z]/.test(char)) {
+            return String.fromCharCode((char.charCodeAt(0) - 65 + desplazamiento) % 26 + 65);
+        } else if (/[a-z]/.test(char)) {
+            return String.fromCharCode((char.charCodeAt(0) - 97 + desplazamiento) % 26 + 97);
         }
-    }
-
-    return resultado;
+        return char;
+    }).join('');
 }
 
 function mostrarAlfabetoDesplazado(desplazamiento) {
     const alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const alfabetoDesplazado = alfabeto.split('').map(letra => {
-        const codigo = letra.charCodeAt(0);
-        return String.fromCharCode(((codigo - 65 + desplazamiento) % 26) + 65);
-    }).join('');
+    const alfabetoDesplazado = alfabeto.split('')
+        .map(letra => String.fromCharCode(((letra.charCodeAt(0) - 65 + desplazamiento) % 26) + 65))
+        .join(' ');
 
-    document.getElementById('alfabetoOriginal').innerText = alfabeto.split('').join(' ');
-    document.getElementById('alfabetoDesplazado').innerText = alfabetoDesplazado.split('').join(' ');
-
+    document.getElementById('alfabetoOriginal').textContent = alfabeto.split('').join(' ');
+    document.getElementById('alfabetoDesplazado').textContent = alfabetoDesplazado;
     document.getElementById('alfabetoContainer').classList.add('show');
 }
 
 function mostrarModal(mensaje) {
     const modal = document.getElementById('messageModal');
-    const closeButton = document.querySelector('.close');
-    const modalText = document.querySelector('.text-modal');
-
-    modalText.innerText = mensaje;
-    
+    document.querySelector('.text-modal').textContent = mensaje;
     modal.style.display = "block";
 
-    closeButton.onclick = function() {
-        modal.style.display = "none";
-    }
+    window.onclick = event => {
+        if (event.target == modal) cerrarModal();
+    };
+}
 
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+function cerrarModal() {
+    document.getElementById('messageModal').style.display = "none";
 }
 
 function limpiarCampos() {

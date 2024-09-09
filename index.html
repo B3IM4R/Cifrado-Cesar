@@ -4,45 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Cifrado de César - Programa">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/styles.css">
     <title>Cifrado de César</title>
 </head>
 <body>
     <div class="container">
         <h1>Cifrado de César</h1>
-        <div class="">
+        <div>
             <label for="message">Mensaje a Cifrar:</label>
-            <textarea type="text" id="message" rows="3" placeholder="Escribe aquí"></textarea>
+            <textarea id="message" rows="3" placeholder="Escribe aquí"></textarea>
         </div>
         <div class="group">
             <label for="displacement">Desplazamiento:</label>
-            <select id="displacement">
-                <script>
-                    for (let i = 1; i <= 25; i++) {
-                        document.write('<option value="' + i + '">' + i + '</option>');
-                    }
-                </script>
-            </select>
+            <select id="displacement"></select>
         </div>
-        <button type="button" class="cifrar-btn" onclick="cifrarTexto()">Cifrar</button>
-        <button type="button" class="limpiar-btn" onclick="limpiarCampos()">Limpiar</button>
+        <button class="cifrar-btn" onclick="cifrarTexto()">Cifrar</button>
+        <button class="limpiar-btn" onclick="limpiarCampos()">Limpiar</button>
         <div>
             <label for="encryptedMessage">Mensaje Cifrado:</label>
-            <textarea type="text" id="encryptedMessage" rows="3" placeholder="Ningún Mensaje" readonly></textarea>
+            <textarea id="encryptedMessage" rows="3" placeholder="Ningún Mensaje" readonly></textarea>
         </div>
         <div id="alfabetoContainer" class="imagen-desplazamiento">
             <table>
-                <tr>
-                    <td id="alfabetoOriginal"></td>
-                </tr>
-                <tr>
-                    <td id="alfabetoDesplazado"></td>
-                </tr>
+                <tr><td id="alfabetoOriginal"></td></tr>
+                <tr><td id="alfabetoDesplazado"></td></tr>
             </table>
         </div>
     </div>
-    <div id="messageModal" class="modal" style="display: none;">
+    <div id="messageModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3 class="title-modal">Sistema</h3>
